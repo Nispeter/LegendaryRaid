@@ -1,0 +1,13 @@
+using System.Buffers.Text;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GameUI : Screen
+{
+    void Start()
+    {
+        pauseGame = false;
+        ScreenManager.Instance.OpenScreen(this);
+    }
+}

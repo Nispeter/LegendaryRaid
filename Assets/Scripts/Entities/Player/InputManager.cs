@@ -16,6 +16,7 @@ public class InputManager : MonoBehaviour
     public delegate void InputAction(Vector2 input);
     public static event InputAction OnMove;
     public static event InputAction OnRun;
+    public static event InputAction OnPause;
 
     void Update()
     {
@@ -30,6 +31,10 @@ public class InputManager : MonoBehaviour
         {
             OnRun?.Invoke(Vector2.zero); 
         }
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnPause?.Invoke(Vector2.zero);
+        }   
     }
 }
 

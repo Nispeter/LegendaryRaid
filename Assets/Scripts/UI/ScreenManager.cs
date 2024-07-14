@@ -25,7 +25,6 @@ public class ScreenManager : MonoBehaviour
 
     public void OpenScreen(Screen screen)
     {
-        //Deactivate UI
         if (screenStack.Count > 0 && !screen.openOnTop)
         {
             screenStack.Peek().DeactivateScreen();
@@ -40,14 +39,10 @@ public class ScreenManager : MonoBehaviour
         {
             screenStack.Pop().DeactivateScreen();
         }
-        if (screenStack.Count > 0)
+        if (screenStack.Count > 0 && !screenStack.Peek().screen.activeSelf)
         {
             screenStack.Peek().ActivateScreen();
         }
-        else{
-            //Activate UI
-        }
     }
-
 
 }

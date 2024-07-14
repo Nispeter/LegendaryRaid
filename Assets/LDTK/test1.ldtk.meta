@@ -20,7 +20,7 @@ ScriptedImporter:
   _useParallax: 1
   _intGridValues:
   - _key: Walls_1
-    _asset: {instanceID: 0}
+    _asset: {fileID: 11400000, guid: a5b723b6200ba6744b7d715c17d0ebb0, type: 2}
   _entities: []
   _enumGenerate: 0
   _enumPath: 
