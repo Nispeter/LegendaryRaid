@@ -3,11 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameUI : Screen
+public class GameUI : Page
 {
     void Start()
     {
         pauseGame = false;
-        ScreenManager.Instance.OpenScreen(this);
+        PageManager.Instance.OpenPage(this);
     }
 }

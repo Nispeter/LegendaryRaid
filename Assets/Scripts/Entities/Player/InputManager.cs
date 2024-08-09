@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
 
 public class InputManager : MonoBehaviour
@@ -17,6 +18,9 @@ public class InputManager : MonoBehaviour
     public static event InputAction OnMove;
     public static event InputAction OnRun;
     public static event InputAction OnPause;
+    public static event InputAction OnClick;
+    public static event InputAction OnClickHold;
+    public static event InputAction OnRelease;
 
     void Update()
     {
@@ -35,6 +39,24 @@ public class InputManager : MonoBehaviour
         {
             OnPause?.Invoke(Vector2.zero);
         }   
+        if(SceneManager.Instance.CurrentGameState == GameState.Playing)
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                OnClick?.Invoke(Input.mousePosition);
+                Debug.Log("Click");
+            }
+            if(Input.GetMouseButton(0))
+            {
+                OnClickHold?.Invoke(Input.mousePosition);
+                Debug.Log("Click Hold");
+            }
+            if (Input.GetMouseButtonUp(0))
+            {
+                OnRelease?.Invoke(Input.mousePosition);
+                Debug.Log("Release");
+            }
+        }
     }
 }
 

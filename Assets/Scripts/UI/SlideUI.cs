@@ -3,7 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SlideUI : Screen
+public class SlideUI : Page
 {
     [Header("Slide Menu Elements")]
     public RectTransform menuPanel;
@@ -31,7 +31,7 @@ public class SlideUI : Screen
         if (!startOpened)
         {
             menuPanel.anchoredPosition = offScreenPosition;
-            screen.SetActive(false);
+            page.SetActive(false);
         }
     }
 
@@ -47,14 +47,14 @@ public class SlideUI : Screen
         }
     }
 
-    public override void DeactivateScreen()
+    public override void DeactivatePage()
     {
         StartCoroutine(SlideOut());
     }
 
     private IEnumerator SlideIn()
     {
-        ScreenManager.Instance.OpenScreen(this);
+        PageManager.Instance.OpenPage(this);
         float elapsedTime = 0;
         Vector2 startingPosition = menuPanel.anchoredPosition;
 
@@ -84,6 +84,6 @@ public class SlideUI : Screen
 
         menuPanel.anchoredPosition = offScreenPosition;
         isOpen = false;
-        screen.SetActive(false);
+        page.SetActive(false);
     }
 }
