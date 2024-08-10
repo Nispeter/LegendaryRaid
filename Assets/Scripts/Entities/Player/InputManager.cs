@@ -44,17 +44,17 @@ public class InputManager : MonoBehaviour
             if(Input.GetMouseButtonDown(0))
             {
                 OnClick?.Invoke(Input.mousePosition);
-                Debug.Log("Click");
+                //Debug.Log("Click");
             }
             if(Input.GetMouseButton(0))
             {
                 OnClickHold?.Invoke(Input.mousePosition);
-                Debug.Log("Click Hold");
+                //Debug.Log("Click Hold");
             }
             if (Input.GetMouseButtonUp(0))
             {
                 OnRelease?.Invoke(Input.mousePosition);
-                Debug.Log("Release");
+                //Debug.Log("Release");
             }
         }
     }

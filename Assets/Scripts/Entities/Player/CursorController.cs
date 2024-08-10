@@ -3,9 +3,10 @@ using System.Collections.Generic;
 
 public class CursorController : MonoBehaviour
 {
-    public RectTransform selectionBox; // Reference to the selection box as a 2D sprite in world space
-    private Vector2 startPosition; // Fixed starting point of the selection box
-    private Vector2 endPosition; // Dynamic endpoint based on mouse movement
+    public RectTransform selectionBox;
+    public HeroSpawner heroSpawner;
+    private Vector2 startPosition;
+    private Vector2 endPosition;
     private bool isSelecting = false;
     private List<Hero> selectedHeroes = new List<Hero>();
 
@@ -19,18 +20,16 @@ public class CursorController : MonoBehaviour
     private void HandleClick(Vector2 input)
     {
         isSelecting = true;
-        startPosition = GetWorldPosition(input);
-
+        startPosition = input;
+        Debug.Log("Start Position: " + startPosition);
         selectionBox.gameObject.SetActive(true);
-        selectionBox.localScale = Vector3.zero; // Reset the size
-        selectionBox.position = startPosition;  // Set initial position
     }
 
     private void HandleDrag(Vector2 input)
     {
         if (!isSelecting) return;
 
-        endPosition = GetWorldPosition(input);
+        endPosition = input;
         UpdateSelectionBox();
     }
 
@@ -40,18 +39,20 @@ public class CursorController : MonoBehaviour
 
         SelectHeroes();
         isSelecting = false;
-
+        selectionBox.sizeDelta = Vector2.zero; 
+        selectionBox.anchoredPosition = startPosition;
         selectionBox.gameObject.SetActive(false);
     }
 
     private void UpdateSelectionBox()
     {
         if (selectionBox == null) return;
-        float widht = endPosition.x - startPosition.x;
+
+        float width = endPosition.x - startPosition.x;
         float height = endPosition.y - startPosition.y;
-        
-        selectionBox.sizeDelta = new Vector2(Mathf.Abs(widht), Mathf.Abs(height));
-        selectionBox.anchoredPosition = startPosition + new Vector2(widht / 2, height / 2);
+
+        selectionBox.sizeDelta = new Vector2(Mathf.Abs(width), Mathf.Abs(height));
+        selectionBox.anchoredPosition = startPosition + new Vector2(width / 2, height / 2);
 
     }
 
@@ -59,8 +60,7 @@ public class CursorController : MonoBehaviour
     {
         selectedHeroes.Clear();
 
-        // Define the bounds of the selection box
-        Bounds selectionBounds = new Bounds(selectionBox.position, selectionBox.localScale);
+        Bounds selectionBounds = new Bounds(selectionBox.position, selectionBox.sizeDelta);
 
         foreach (var hero in FindObjectsOfType<Hero>())
         {
