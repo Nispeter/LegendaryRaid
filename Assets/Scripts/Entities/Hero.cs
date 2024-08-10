@@ -13,6 +13,8 @@ public class Hero : MonoBehaviour, IEntity, IHealth
     public float attackRange;
     public float damage;
 
+    public GameObject SelectionMarker;
+
     void Start(){
         remainingHealth = health;
         isSelected = false;
@@ -20,6 +22,17 @@ public class Hero : MonoBehaviour, IEntity, IHealth
 
     [HideInInspector]
     public bool isSelected;
+
+    public void Select(){
+        isSelected = true;
+        SelectionMarker.SetActive(true);
+        Debug.Log("Hero has been selected");
+    }
+
+    public void DeSelect(){
+        isSelected = false;
+        SelectionMarker.SetActive(false);
+    }
 
     public void Die()
     {

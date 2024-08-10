@@ -21,7 +21,6 @@ public class CursorController : MonoBehaviour
     {
         isSelecting = true;
         startPosition = input;
-        Debug.Log("Start Position: " + startPosition);
         selectionBox.gameObject.SetActive(true);
     }
 
@@ -39,7 +38,7 @@ public class CursorController : MonoBehaviour
 
         SelectHeroes();
         isSelecting = false;
-        selectionBox.sizeDelta = Vector2.zero; 
+        selectionBox.sizeDelta = Vector2.zero;
         selectionBox.anchoredPosition = startPosition;
         selectionBox.gameObject.SetActive(false);
     }
@@ -60,26 +59,40 @@ public class CursorController : MonoBehaviour
     {
         selectedHeroes.Clear();
 
-        Bounds selectionBounds = new Bounds(selectionBox.position, selectionBox.sizeDelta);
+        // Convert the corners of the selection box from screen space to world space
+        Vector2 minScreenPosition = selectionBox.anchoredPosition - (selectionBox.sizeDelta / 2);
+        Vector2 maxScreenPosition = selectionBox.anchoredPosition + (selectionBox.sizeDelta / 2);
 
-        foreach (var hero in FindObjectsOfType<Hero>())
+        Vector3 minWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(minScreenPosition.x, minScreenPosition.y, Camera.main.nearClipPlane));
+        Vector3 maxWorldPosition = Camera.main.ScreenToWorldPoint(new Vector3(maxScreenPosition.x, maxScreenPosition.y, Camera.main.nearClipPlane));
+
+        // Adjust z position to be at the same depth as the heroes (assuming z=0)
+        minWorldPosition.z = 0f;
+        maxWorldPosition.z = 0f;
+
+        // Create the bounds in world space
+        Bounds selectionBounds = new Bounds();
+        selectionBounds.SetMinMax(minWorldPosition, maxWorldPosition);
+
+        // Debug log for min and max positions
+        Debug.Log($"Min World Position: {minWorldPosition}, Max World Position: {maxWorldPosition}");
+
+        foreach (var hero in heroSpawner.heroes)
         {
-            if (selectionBounds.Contains(hero.transform.position))
+            // Use the hero's world position to check if it's within the selection bounds
+            Vector3 heroPosition = hero.transform.position;
+            if (selectionBounds.Contains(heroPosition))
             {
-                hero.isSelected = true;
+                hero.Select();
                 selectedHeroes.Add(hero);
+                Debug.Log($"Hero {hero.name} selected at position {heroPosition}");
             }
             else
             {
-                hero.isSelected = false;
+                hero.DeSelect();
+                Debug.Log($"Hero {hero.name} deselected at position {heroPosition}");
             }
         }
-    }
-
-    private Vector2 GetWorldPosition(Vector2 screenPosition)
-    {
-        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(screenPosition);
-        return new Vector2(worldPosition.x, worldPosition.y);
     }
 
     private void OnDestroy()

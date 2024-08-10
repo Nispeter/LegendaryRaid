@@ -47,9 +47,18 @@ public class SlideUI : Page
         }
     }
 
+    public override void ActivatePage()
+    {
+        page.SetActive(true);
+        if (pauseGame)
+            SceneManager.Instance.ChangeGameState(GameState.Pause);
+        SceneManager.Instance.ChangeGameState(GameState.Spawning);
+    }
+
     public override void DeactivatePage()
     {
         StartCoroutine(SlideOut());
+        SceneManager.Instance.ChangeGameState(GameState.Playing);
     }
 
     private IEnumerator SlideIn()
@@ -68,6 +77,7 @@ public class SlideUI : Page
         menuPanel.anchoredPosition = onScreenPosition;
         isOpen = true;
     }
+
 
     private IEnumerator SlideOut()
     {

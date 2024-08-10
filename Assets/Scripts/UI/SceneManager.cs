@@ -7,6 +7,7 @@ public enum GameState
 {
     MainMenu,
     Playing,
+    Spawning,
     Pause,
     GameOver
 }
